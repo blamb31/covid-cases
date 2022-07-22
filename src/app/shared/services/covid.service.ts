@@ -12,4 +12,7 @@ export class CovidService {
   getAllCases() {
     return this._http.get(`${this.baseUrl}/cases`)
   }
+  getAllHistory() {
+    return this._http.get(`${this.baseUrl}/history?status=deaths`)
+  }
 }

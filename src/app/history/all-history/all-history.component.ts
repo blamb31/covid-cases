@@ -4,27 +4,30 @@ import {CacheResultsService} from 'src/app/shared/services/cache-results.service
 import {CovidService} from 'src/app/shared/services/covid.service';
 
 @Component({
-  selector: 'app-all-cases',
-  templateUrl: './all-cases.component.html',
-  styleUrls: ['./all-cases.component.scss']
+  selector: 'app-all-history',
+  templateUrl: './all-history.component.html',
+  styleUrls: ['./all-history.component.scss']
 })
-export class AllCasesComponent implements OnInit {
+export class AllHistoryComponent implements OnInit {
 
-  public covidCases$!: Observable<any>;
+  public covidHistory$!: Observable<any>;
 
   constructor(private _covidService: CovidService, private _cacheService: CacheResultsService) { }
 
   ngOnInit(): void {
     let usedCache = false;
-    this.covidCases$ = this._cacheService.checkAllCases().pipe(
+    this.covidHistory$ = this._cacheService.checkAllHistory().pipe(
       switchMap((cache:any) => {
+        console.log({cache})
         if(cache) {
+          usedCache = true;
+          console.log({usedCache})
           return of(cache)
         }else {
-          return this._covidService.getAllCases()
+          return this._covidService.getAllHistory()
         }
       }),
-        tap( (data:any) => {
+      tap( (data:any) => {
         console.log({data})
         if(!usedCache) {
           console.log("Setting Cache")

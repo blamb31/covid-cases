@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AllCasesComponent} from './cases/all-cases/all-cases.component';
+import {AllHistoryComponent} from './history/all-history/all-history.component';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AllCasesComponent,
+    component: HomeComponent,
   },
   {
     path:'cases',
     loadChildren: () => import('./cases/cases.module').then(m => m.CasesModule)
+  },
+  {
+    path:'history',
+    loadChildren: () => import('./history/history.module').then(m => m.HistoryModule)
   }
 ];
 
