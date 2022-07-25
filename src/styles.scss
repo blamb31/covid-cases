@@ -1,6 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.navbar,
+.footer {
+    border-radius: 7px;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+}
+
+.navbar:hover,
+.footer:hover {
+    background-color: rgb(66, 105, 125, .2);
+    opacity: 1;
+    color: white;
 }

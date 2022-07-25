@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable, of, switchMap, tap} from 'rxjs';
 import {CacheResultsService} from 'src/app/shared/services/cache-results.service';
 import {CovidService} from 'src/app/shared/services/covid.service';
@@ -6,7 +6,7 @@ import {CovidService} from 'src/app/shared/services/covid.service';
 @Component({
   selector: 'app-all-cases',
   templateUrl: './all-cases.component.html',
-  styleUrls: ['./all-cases.component.scss']
+  styleUrls: [ './all-cases.component.scss' ]
 })
 export class AllCasesComponent implements OnInit {
 
@@ -17,18 +17,20 @@ export class AllCasesComponent implements OnInit {
   ngOnInit(): void {
     let usedCache = false;
     this.covidCases$ = this._cacheService.checkAllCases().pipe(
-      switchMap((cache:any) => {
-        if(cache) {
+      switchMap((cache: any) => {
+        if (cache) {
+          usedCache = true;
+          console.log({usedCache})
           return of(cache)
-        }else {
+        } else {
           return this._covidService.getAllCases()
         }
       }),
-        tap( (data:any) => {
+      tap((data: any) => {
         console.log({data})
-        if(!usedCache) {
+        if (!usedCache) {
           console.log("Setting Cache")
-          localStorage.setItem('allHistory', JSON.stringify({date: new Date(), data}))
+          localStorage.setItem('allCases', JSON.stringify({date: new Date(), data}))
         }
       })
     )
