@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {HomeComponent} from './home/home.component';
 import { MapComponent } from './map/map.component';
+import { SummaryComponent } from './summary/summary.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { MapComponent } from './map/map.component';
     AppComponent,
     HomeComponent,
     MapComponent,
+    SummaryComponent,
   ],
   imports: [
     BrowserModule,

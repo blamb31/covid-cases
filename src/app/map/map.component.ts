@@ -8,7 +8,7 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class MapComponent implements OnInit {
 
-  public selectedCountry: string = '';
+  public selectedCountry: {[ name: string ]: any} = {};
   public infoType: string = 'cases';
 
   @Output() countrySelected = new EventEmitter<{[ name: string ]: any}>();
@@ -17,7 +17,8 @@ export class MapComponent implements OnInit {
   constructor() { }
 
   public setCountry(country: {[ name: string ]: any}) {
-    this.selectedCountry = country[ 'admin' ];
+    console.log({country})
+    this.selectedCountry = country;
     this.countrySelected.emit(country);
   }
 
@@ -87,7 +88,7 @@ export class MapComponent implements OnInit {
           map.getCanvas().style.cursor = 'pointer';
           map.setFilter("cfh", [ "==", "name", features[ 0 ].properties[ 'name' ] ]);
           const eCountry = features[ 0 ].properties[ 'admin' ]
-          if (eCountry !== this.selectedCountry) {
+          if (eCountry !== this.selectedCountry[ 'admin' ]) {
             this.setCountry(features[ 0 ].properties)
           }
         }
@@ -100,7 +101,7 @@ export class MapComponent implements OnInit {
           map.getCanvas().style.cursor = 'pointer';
           map.setFilter("cfh", [ "==", "name", features[ 0 ].properties[ 'name' ] ]);
           const eCountry = features[ 0 ].properties[ 'admin' ]
-          if (eCountry !== this.selectedCountry) {
+          if (eCountry !== this.selectedCountry[ 'admin' ]) {
             this.setCountry(features[ 0 ].properties)
           } else {
             countryClicked = !countryClicked;
