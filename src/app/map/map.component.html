@@ -1,24 +1,29 @@
 <div class="h-full" id='map'></div>
-<div class='map-overlay absolute' id='features' *ngIf="selectedCountry">
-    <div class="flex flex-col items-center border-b-2 border-gray-500">
+<div class='map-overlay absolute ' id='features' *ngIf="selectedCountry">
+    <div class="flex flex-col items-center border-b-2 border-gray-400">
         <h2 class="font-bold text-xl">{{infoType | titlecase}}</h2>
         <h2 class="italic text-md">{{selectedCountry}}</h2>
     </div>
-    <ng-container *ngIf="info">
-        <div class="flex flex-col items-start mt-5">
+    <ng-container *ngIf="info; else noInfo">
+        <div class="flex flex-col items-start mt-5 ">
             <p>
-               <span>Confirmed Cases: </span> {{info['All'].confirmed | number}}
+                <span class="font-bold">Confirmed Cases: </span> {{info['All'].confirmed | number}}
             </p>
             <p>
-               <span>Deaths: </span> {{info['All'].deaths | number}}
+                <span class="font-bold">Deaths: </span> {{info['All'].deaths | number}}
             </p>
         </div>
-        <div class="flex justify-center italic mt-3 hover:underline hover:text-gray-600">
+        <div class="flex justify-center italic mt-3 hover:underline hover:text-gray-300">
             <a [routerLink]="['cases/all']"> See More</a>
         </div>
         <!-- <div *ngIf="info['All'].updated" class="relative bottom-0 text-xs">
             Updated At: <span>{{info["All"].updated}}</span>
         </div> -->
     </ng-container>
+    <ng-template #noInfo>
+        <div class="flex w-full justify-center mt-5">
+            <h2>No Data Available</h2>
+        </div>
+    </ng-template>
 </div>
 <!-- <div class='map-overlay' id='legend'></div> -->

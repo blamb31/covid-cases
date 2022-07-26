@@ -16,19 +16,20 @@ export class HomeComponent implements OnInit {
   constructor(private _covidService: CovidService, private _cacheService: CacheResultsService) { }
 
   setCountryInfo(country: {[ name: string ]: any}) {
-    console.log({code: country[ 'iso_n3' ]})
     this.selectedCountryInfo$ = this.covidCases$.pipe(
       map((countries: any) => {
         for (let c in countries) {
-          console.log({1: countries[ c ], a: countries[ c ][ 'All' ].iso, b: Number(country[ 'iso_n3' ])})
-          if (countries[ c ][ "All" ].iso === Number(country[ 'iso_n3' ])) {
-            console.log({c})
-            return countries[ c ]
+          if (countries[ c ][ 'All' ].iso) {
+            if (countries[ c ][ "All" ].iso === Number(country[ 'iso_n3' ])) {
+              return countries[ c ]
+            }
+          } else if (countries[ c ][ 'All' ].iso === null) {
+            if (countries[ c ][ "All" ].country === country[ 'admin' ]) {
+              return countries[ c ]
+            }
           }
-          // return cases.filter((c: any) => Number(c.country_code) === Number(country[ 'iso_n3' ]))
         }
       }),
-      tap(data => console.log({data}))
     )
   }
 
@@ -45,7 +46,7 @@ export class HomeComponent implements OnInit {
         }
       }),
       tap((data: any) => {
-        if (!usedCache) {
+        if (!usedCache.cases) {
           localStorage.setItem('allCases', JSON.stringify({date: new Date(), data}))
         }
       })

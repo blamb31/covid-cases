@@ -17,7 +17,6 @@ export class MapComponent implements OnInit {
   constructor() { }
 
   public setCountry(country: {[ name: string ]: any}) {
-    console.log("SET", country)
     this.selectedCountry = country[ 'admin' ];
     this.countrySelected.emit(country);
   }
@@ -37,55 +36,12 @@ export class MapComponent implements OnInit {
     let hoveredCountryId: any = null;
 
     map.on('load', () => {
-      // map.addSource('states', {
-      //   'type': 'geojson',
-      //   'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/us_states.geojson'
-      // });
-
-      // The feature-state dependent fill-opacity expression will render the hover effect
-      // when a feature's hover state is set to true.
-      // map.addLayer({
-      //   'id': 'state-fills',
-      //   'type': 'fill',
-      //   'source': 'states',
-      //   'layout': {},
-      //   'paint': {
-      //     'fill-color': '#627BC1',
-      //     'fill-opacity': [
-      //       'case',
-      //       [ 'boolean', [ 'feature-state', 'hover' ], false ],
-      //       1,
-      //       0.5
-      //     ]
-      //   }
-      // });
-
-      // map.addLayer({
-      //   'id': 'state-borders',
-      //   'type': 'line',
-      //   'source': 'states',
-      //   'layout': {},
-      //   'paint': {
-      //     'line-color': '#627BC1',
-      //     'line-width': 2
-      //   }
-      // });
 
       map.addSource('cbs', {  // country-boundaries-simplified
         'type': 'geojson',
         'data': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson'
       });
 
-      // map.addLayer({
-      //   'id': 'country-borders',
-      //   'type': 'line',
-      //   'source': 'cbs',
-      //   'layout': {},
-      //   'paint': {
-      //     'line-color': '#627BC1',
-      //     'line-width': 2
-      //   }
-      // });
       map.addLayer({
         "id": "country-fills",  // country-fills
         "type": "fill",
@@ -135,17 +91,7 @@ export class MapComponent implements OnInit {
             this.setCountry(features[ 0 ].properties)
           }
         }
-        // else {
-        //   map.setFilter("cfh", [ "==", "name", "" ]);
-        //   map.getCanvas().style.cursor = '';
-        // }
       });
-
-      // Reset the state-fills-hover layer's filter when the mouse leaves the map
-      // map.on("mouseout", function () {
-      //   map.getCanvas().style.cursor = 'auto';
-      //   map.setFilter("cfh", [ "==", "name", "" ]);
-      // });
 
       map.on("click", (e) => {
         var features = map.queryRenderedFeatures(e.point, {layers: [ "country-fills" ]});
@@ -155,54 +101,12 @@ export class MapComponent implements OnInit {
           map.setFilter("cfh", [ "==", "name", features[ 0 ].properties[ 'name' ] ]);
           const eCountry = features[ 0 ].properties[ 'admin' ]
           if (eCountry !== this.selectedCountry) {
-            this.setCountry(features[ 0 ].properties[ 'admin' ])
+            this.setCountry(features[ 0 ].properties)
           } else {
             countryClicked = !countryClicked;
           }
         }
       })
-
-      // When the user moves their mouse over the state-fill layer, we'll update the
-      // feature state for the feature under the mouse.
-      // map.on('mouseenter', 'state-fills', (e: any) => {
-      //   console.log({e: e.features})
-      // if (e.features.length > 0) {
-      //   if (hoveredStateId !== null) {
-      //     map.setFeatureState(
-      //       {source: 'states', id: hoveredStateId},
-      //       {hover: false}
-      //     );
-      //   }
-      //   hoveredStateId = e.features[ 0 ].id;
-      //   map.setFeatureState(
-      //     {source: 'states', id: hoveredStateId},
-      //     {hover: true}
-      //   );
-      // }
-      // });
-
-      // When the mouse leaves the state-fill layer, update the feature state of the
-      // previously hovered feature.
-      // map.on('mouseleave', 'state-fills', () => {
-      // if (hoveredStateId !== null) {
-      //   map.setFeatureState(
-      //     {source: 'states', id: hoveredStateId},
-      //     {hover: false}
-      //   );
-      // }
-      // hoveredStateId = null;
-      // });
-
-      map.on('click', 'country-fills', (e: any) => {
-        console.log({e, hoveredCountryId})
-
-      });
-
-      // When the mouse leaves the state-fill layer, update the feature state of the
-      // previously hovered feature.
-      map.on('click', 'country-fills', (e: any) => {
-        console.log({e: e.features})
-      });
     });
 
 
