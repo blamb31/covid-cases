@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -9,11 +9,17 @@ import * as mapboxgl from 'mapbox-gl';
 export class MapComponent implements OnInit {
 
   public selectedCountry: string = '';
+  public infoType: string = 'cases';
+
+  @Output() countrySelected = new EventEmitter<{[ name: string ]: any}>();
+  @Input() info: any
+
   constructor() { }
 
-  public setCountry(country: string) {
+  public setCountry(country: {[ name: string ]: any}) {
     console.log("SET", country)
-    this.selectedCountry = country;
+    this.selectedCountry = country[ 'admin' ];
+    this.countrySelected.emit(country);
   }
 
 
@@ -23,8 +29,8 @@ export class MapComponent implements OnInit {
     const map = new mapboxgl.Map({
       container: 'map', // Specify the container ID
       style: 'mapbox://styles/mapbox/dark-v10', // Specify which map style to use
-      center: [ -122.44121, 37.76132 ], // Specify the starting position [lng, lat]
-      zoom: 3.5 // Specify the starting zoom
+      center: [ -97.44121, 37.76132 ], // Specify the starting position [lng, lat]
+      zoom: 2.5 // Specify the starting zoom
     });
 
     let countryClicked: any = false;
@@ -126,7 +132,7 @@ export class MapComponent implements OnInit {
           map.setFilter("cfh", [ "==", "name", features[ 0 ].properties[ 'name' ] ]);
           const eCountry = features[ 0 ].properties[ 'admin' ]
           if (eCountry !== this.selectedCountry) {
-            this.setCountry(features[ 0 ].properties[ 'admin' ])
+            this.setCountry(features[ 0 ].properties)
           }
         }
         // else {

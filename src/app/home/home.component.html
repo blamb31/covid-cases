@@ -1,1 +1,8 @@
-<app-map></app-map>
+<div class="flex">
+    <div class="min-h-full">
+        <app-map (countrySelected)="setCountryInfo($event)" [info]="selectedCountryInfo$ | async"></app-map>
+    </div>
+    <div>
+        <p>Test Content</p>
+    </div>
+</div>
