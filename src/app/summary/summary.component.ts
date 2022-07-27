@@ -16,8 +16,18 @@ export class SummaryComponent implements OnInit {
   public covidHistory$!: Observable<any>;
   public selectedCountry: {[ name: string ]: any} = {};
   public countryName: string = "";
+  public regions: string[] = []
 
   constructor(private _covidService: CovidService, private _cacheService: CacheResultsService, private _route: ActivatedRoute) { }
+
+  goBack() {
+    window.history.back()
+  }
+
+  calcPerCapita(stat: string, pop: string) {
+    console.log({stat, pop})
+    return ((Number(stat) / Number(pop))).toFixed(5)
+  }
 
   ngOnInit(): void {
     let usedCache = {cases: false, history: false};
@@ -87,6 +97,8 @@ export class SummaryComponent implements OnInit {
           console.log("IS US")
           data[ 'All' ].country = 'United States'
         }
+        this.regions = Object.keys(data)
+        console.log({regions: this.regions})
         return data
       }),
       tap(data => console.log({data}))

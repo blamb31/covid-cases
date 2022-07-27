@@ -3,7 +3,6 @@
     min-height: 900px;
     grid-template-columns: 1;
     grid-template-rows: 112px 1fr 112px;
-    height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
     background: #191a1a
@@ -17,10 +16,11 @@
     width: 100%;
     background-color: transparent;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     z-index: 10;
     opacity: 0;
+    padding: 0 3rem;
 }
 
 .navbar:hover,

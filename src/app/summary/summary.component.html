@@ -1,10 +1,65 @@
 <div *ngIf="selectedCountryInfo$ | async as sc" class="text-gray-300 w-full h-full flex items-center flex-col">
-    <div class="w-3/5 flex justify-center border-b-4 border-gray-300 pb-3">
+    <div class=" flex justify-start w-3/5 cursor-pointer mt-5">
+        <a (click)="goBack()">← Back</a>
+    </div>
+
+    <div class="w-3/5 flex justify-center border-b-4 border-gray-300 pb-3 mt-10">
         <h1 class="text-5xl">{{countryName}}</h1>
     </div>
 
-    <div class="w-1/3 bg-white h-1/2 mt-10 relative">
+    <div class="w-1/3 bg-white h-1/2 min-h-[350px] mt-10 relative">
         <app-map [lat]="sc['All'].lat || '37.76132'" [lng]="sc['All'].long ||  '-97.44121'" [highlightedCountry]="sc" [zoom]="2"></app-map>
+    </div>
+
+    <div class="mt-10 w-3/5 flex flex-col items-center">
+        <div class="w-full flex flex-wrap ">
+            <div class="flex items-center justify-center w-full p-5 pl-0 ">
+                <h1 class="text-3xl font-bold">Total Population:</h1>
+                <p class="ml-3 text-3xl">{{sc['All'].population | number}}</p>
+            </div>
+            <div class="flex items-center justify-center w-1/2 p-5 ">
+                <h1 class="text-3xl font-bold">Total Cases:</h1>
+                <p class="ml-3 text-3xl">{{sc['All'].confirmed | number}}</p>
+            </div>
+            <div class="flex items-center justify-center w-1/2 p-5 ">
+                <h1 class="text-3xl font-bold">Total Deaths:</h1>
+                <p class="ml-3 text-3xl">{{sc['All'].deaths | number}}</p>
+            </div>
+            <div class="flex items-center justify-center w-1/2 p-5 ">
+                <h1 class="text-3xl font-bold">Total Cases Per Capita:</h1>
+                <p class="ml-3 text-3xl">{{ calcPerCapita(sc['All'].confirmed, sc['All'].population) | number}}</p>
+            </div>
+            <div class="flex items-center justify-center w-1/2 p-5 ">
+                <h1 class="text-3xl font-bold">Total Deaths Per Capita:</h1>
+                <p class="ml-3 text-3xl">{{ calcPerCapita(sc['All'].deaths, sc['All'].population) | number}}</p>
+            </div>
+        </div>
+        <table *ngIf="regions.length > 1" class="border-2 border-gray-300 mt-10">
+            <thead class="table-bg">
+                <tr>
+                    <th class="border-2 border-gray-300 py-3 px-10">Region</th>
+                    <th class="border-2 border-gray-300 py-3 px-10">Confirmed</th>
+                    <th class="border-2 border-gray-300 py-3 px-10">Deaths</th>
+                    <th class="border-2 border-gray-300 py-3 px-10">Last Updated</th>
+                    <!-- <th class="border-2 border-gray-300 py-3 px-10">Population</th>
+                    <th class="border-2 border-gray-300 py-3 px-10">Cases Per Capita</th>
+                    <th class="border-2 border-gray-300 py-3 px-10">Deaths Per Capita</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let r of regions; let i = index">
+                    <tr class="border-2 border-gray-300" [class]="i % 2 === 0 ? 'light-row-bg' : 'dark-row-bg' " *ngIf="r !== 'All'">
+                        <td class="px-10 py-3 ">{{r}}</td>
+                        <td class="px-10 py-3 ">{{sc[r].confirmed}}</td>
+                        <td class="px-10 py-3 ">{{sc[r].deaths}}</td>
+                        <td class="px-10 py-3 ">{{sc[r].updated | date : 'MMMM d, y' }}</td>
+                        <!-- <td class="px-10 py-3 ">{{sc[r] | json}}</td>
+                        <td class="px-10 py-3 ">{{sc[r]}}</td>
+                        <td class="px-10 py-3 ">{{sc[r]}}</td> -->
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
     </div>
 
 </div>
