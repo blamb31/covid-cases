@@ -56,6 +56,7 @@ export class SummaryComponent implements OnInit {
     let countryMap: any = {}
     this.selectedCountryInfo$ = this.covidCases$.pipe(
       switchMap((countries: any) => {
+        console.log({countries})
         countryMap = countries
         return this._route.params
       }),
@@ -74,6 +75,19 @@ export class SummaryComponent implements OnInit {
           }
         }
 
+      }),
+      map(data => {
+        console.log("DATA", data)
+        if (!data[ "All" ].lat || !data[ "All" ].long) {
+          const keys = Object.keys(data)
+          data[ "All" ].lat = data[ keys[ keys.length - 1 ] ].lat
+          data[ "All" ].long = data[ keys[ keys.length - 1 ] ].long
+        }
+        if (data[ 'All' ].country === 'US') {
+          console.log("IS US")
+          data[ 'All' ].country = 'United States'
+        }
+        return data
       }),
       tap(data => console.log({data}))
     )
