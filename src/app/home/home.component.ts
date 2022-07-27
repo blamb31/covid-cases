@@ -18,6 +18,9 @@ export class HomeComponent implements OnInit {
   setCountryInfo(country: {[ name: string ]: any}) {
     this.selectedCountryInfo$ = this.covidCases$.pipe(
       map((countries: any) => {
+        if (country[ 'admin' ] === 'Global') {
+          return countries.Global
+        }
         for (let c in countries) {
           if (countries[ c ][ 'All' ].iso) {
             if (countries[ c ][ "All" ].iso === Number(country[ 'iso_n3' ])) {

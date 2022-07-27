@@ -34,7 +34,6 @@ export class MapComponent implements OnInit {
     });
 
     let countryClicked: any = false;
-    let hoveredCountryId: any = null;
 
     map.on('load', () => {
 
@@ -91,6 +90,10 @@ export class MapComponent implements OnInit {
           if (eCountry !== this.selectedCountry[ 'admin' ]) {
             this.setCountry(features[ 0 ].properties)
           }
+        } else if (!countryClicked) {
+          map.setFilter("cfh", [ "==", "name", "" ]);
+          map.getCanvas().style.cursor = '';
+          this.setCountry({admin: "Global"})
         }
       });
 
